@@ -1866,7 +1866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      moment: {
 	        date: {
-	          year: 'yyyy',
+	          year: 'YYYY',
 	          hour: 'ha',
 	          day: 'D MMM',
 	          month: 'MMMM',
