@@ -7,6 +7,23 @@
 
   <div class="alert alert-danger" ng-hide="vm.viewDate">The value passed to view-date attribute of the calendar is not set</div>
 
+  <mwl-calendar-all
+    events="vm.events"
+    start-date="vm.startDate"
+    end-date="vm.endDate"
+    on-event-click="vm.onEventClick"
+    on-event-times-changed="vm.onEventTimesChanged"
+    on-edit-event-click="vm.onEditEventClick"
+    on-delete-event-click="vm.onDeleteEventClick"
+    on-timespan-click="vm.onTimespanClick"
+    edit-event-html="vm.editEventHtml"
+    delete-event-html="vm.deleteEventHtml"
+    cell-is-open="vm.cellIsOpen"
+    cell-modifier="vm.cellModifier"
+    slide-box-disabled="vm.slideBoxDisabled"
+    ng-switch-when="all">
+  </mwl-calendar-all>
+
   <mwl-calendar-year
     events="vm.events"
     view-date="vm.viewDate"

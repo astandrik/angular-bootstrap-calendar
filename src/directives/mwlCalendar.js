@@ -9,7 +9,6 @@ angular
     var vm = this;
 
     vm.events = vm.events || [];
-
     vm.changeView = function(view, newDay) {
       vm.view = view;
       vm.viewDate = newDay;
@@ -20,6 +19,7 @@ angular
       var rawDate = moment(date).toDate();
 
       var nextView = {
+        all: 'year',
         year: 'month',
         month: 'day',
         week: 'day'
@@ -123,6 +123,8 @@ angular
         view: '=',
         viewTitle: '=?',
         viewDate: '=',
+        startDate: '=',
+        endDate: '=',
         editEventHtml: '=?',
         deleteEventHtml: '=?',
         cellIsOpen: '=?',

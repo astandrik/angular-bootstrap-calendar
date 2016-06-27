@@ -8,6 +8,7 @@ angular
     allDateFormats: {
       angular: {
         date: {
+          year: 'yyyy',
           hour: 'ha',
           day: 'd MMM',
           month: 'MMMM',
@@ -24,6 +25,7 @@ angular
       },
       moment: {
         date: {
+          year: 'yyyy',
           hour: 'ha',
           day: 'D MMM',
           month: 'MMMM',

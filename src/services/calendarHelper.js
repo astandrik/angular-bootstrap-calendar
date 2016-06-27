@@ -130,6 +130,29 @@ angular
 
     }
 
+    function getAllView(events, start, end, cellModifier) {
+
+      var view = [];
+      var startYear = moment(start.toString());
+      var endYear = moment(end.toString());
+      while(startYear < endYear) {
+        var eventsInPeriod = getEventsInPeriod(startYear, 'year', events);
+        var cell = {
+          label: formatDate(startYear, calendarConfig.dateFormats.year),
+          isToday: startYear.isSame(moment().startOf('year')),
+          date: startYear.clone(),
+          events: eventsInPeriod,
+          badgeTotal: getBadgeTotal(eventsInPeriod)
+        };
+        cellModifier({calendarCell: cell});
+        view.push(cell);
+        startYear.add(1, 'year');
+      }
+      return view;
+
+    }
+
+
     function getMonthView(events, viewDate, cellModifier) {
 
       var startOfMonth = moment(viewDate).startOf('month');
@@ -354,6 +377,7 @@ angular
     return {
       getWeekDayNames: getWeekDayNames,
       getYearView: getYearView,
+      getAllView: getAllView,
       getMonthView: getMonthView,
       getWeekView: getWeekView,
       getDayView: getDayView,

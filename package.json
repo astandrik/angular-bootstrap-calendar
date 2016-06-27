@@ -76,9 +76,6 @@
     "release": "npm run build && npm run changelog"
   },
   "config": {
-    "ghooks": {
-      "commit-msg": "validate-commit-msg"
-    },
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }

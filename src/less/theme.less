@@ -48,12 +48,25 @@
 }
 .cal-month-box,
 .cal-year-box,
-.cal-week-box {
+.cal-week-box{
   border-top: @borderSizehoriz @borderStyle @borderColor;
   border-bottom: @borderSizehoriz @borderStyle @borderColor;
   border-right: @borderSizevert @borderStyle @borderColor;
   border-left: @borderSizevert @borderStyle @borderColor;
   border-radius: 2px;
+}
+.cal-all-box {
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  border: 1px solid #e1e1e1;
+  border-bottom: none;
+  border-radius: 2px;
+  .year-cell {
+    border-right: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+  }
 }
 .cal-month-box {
   border-right: 0px;
