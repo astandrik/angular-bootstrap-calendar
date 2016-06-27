@@ -452,6 +452,19 @@
   border-left: 1px solid #e1e1e1;
   border-radius: 2px;
 }
+.cal-all-box {
+  border: 1px solid #e1e1e1;
+  border-bottom: none;
+  border-radius: 2px;
+}
+.cal-all-box .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.cal-all-box .year-cell {
+  border-right: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+}
 .cal-month-box {
   border-right: 0px;
   border-bottom: 0px;
