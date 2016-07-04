@@ -7,14 +7,18 @@ angular
   .controller('MwlCalendarAllCtrl', function($scope, moment, calendarHelper) {
 
     var vm = this;
-    vm.openMonthIndex = null;
+    vm.openYearIndex = null;
 
     $scope.$on('calendar.refreshView', function() {
       vm.view = calendarHelper.getAllView(vm.events, vm.startDate, vm.endDate, vm.cellModifier);
-
+      var rows = Math.floor(vm.view.length / 5);
+      vm.yearOffsets = [];
+      for (var i = 0; i < rows; i++) {
+        vm.yearOffsets.push(i * 5);
+      }
       //Auto open the calendar to the current day if set
-      if (vm.cellIsOpen && vm.openMonthIndex === null) {
-        vm.openMonthIndex = null;
+      if (vm.cellIsOpen && vm.openYearIndex === null) {
+        vm.openYearIndex = null;
         vm.view.forEach(function(month) {
           if (moment(vm.viewDate).startOf('month').isSame(month.date)) {
             vm.monthClicked(month, true);
@@ -24,7 +28,7 @@ angular
 
     });
 
-    vm.monthClicked = function(month, monthClickedFirstRun, $event) {
+    vm.yearClicked = function(month, monthClickedFirstRun, $event) {
 
       if (!monthClickedFirstRun) {
         vm.onTimespanClick({
@@ -39,11 +43,11 @@ angular
 
       vm.openRowIndex = null;
       var monthIndex = vm.view.indexOf(month);
-      if (monthIndex === vm.openMonthIndex) { //the month has been clicked and is already open
-        vm.openMonthIndex = null; //close the open month
+      if (monthIndex === vm.openYearIndex) { //the month has been clicked and is already open
+        vm.openYearIndex = null; //close the open month
         vm.cellIsOpen = false;
       } else {
-        vm.openMonthIndex = monthIndex;
+        vm.openYearIndex = monthIndex;
         vm.openRowIndex = Math.floor(monthIndex / 4);
         vm.cellIsOpen = true;
       }

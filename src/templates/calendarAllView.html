@@ -1,8 +1,9 @@
 <div class="cal-all-box">
+  <div ng-repeat="rowOffset in [0, 4, 8] track by rowOffset">
     <div class="row cal-before-eventlist">
       <div
         class="span3 col-md-3 col-xs-6 cal-cell year-cell {{ day.cssClass }}"
-        ng-repeat="year in vm.view"
+        ng-repeat="year in vm.view| calendarLimitTo:4:rowOffset track by $index"
         ng-init="yearIndex = vm.view.indexOf(month)"
         ng-click="vm.yearClicked(year, false, $event)"
         ng-class="{pointer: month.events.length > 0, 'cal-day-today': month.isToday}">
@@ -20,4 +21,15 @@
         </small>
       </div>
     </div>
+    <mwl-calendar-slide-box
+      is-open="vm.openRowIndex === $index && vm.view[vm.openYearIndex].events.length > 0 && !vm.slideBoxDisabled"
+      events="vm.view[vm.openYearIndex].events"
+      on-event-click="vm.onEventClick"
+      edit-event-html="vm.editEventHtml"
+      on-edit-event-click="vm.onEditEventClick"
+      delete-event-html="vm.deleteEventHtml"
+      on-delete-event-click="vm.onDeleteEventClick"
+      cell="vm.view[vm.openYearIndex]">
+    </mwl-calendar-slide-box>
+  </div>
 </div>
