@@ -177,7 +177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"cal-all-box\">\r\n    <div class=\"row cal-before-eventlist\">\r\n      <div\r\n        class=\"span3 col-md-3 col-xs-6 cal-cell year-cell {{ day.cssClass }}\"\r\n        ng-repeat=\"year in vm.view\"\r\n        ng-init=\"yearIndex = vm.view.indexOf(month)\"\r\n        ng-click=\"vm.yearClicked(year, false, $event)\"\r\n        ng-class=\"{pointer: month.events.length > 0, 'cal-day-today': month.isToday}\">\r\n        <span\r\n          style=\"display: block; height:40px; text-align: center\"\r\n          class=\"pull-left\"\r\n          data-cal-date\r\n          ng-click=\"vm.calendarCtrl.dateClicked(year.date)\"\r\n          ng-bind=\"year.label\">\r\n        </span>\r\n        <small\r\n          class=\"cal-events-num badge badge-important pull-right\"\r\n          ng-show=\"year.badgeTotal > 0\"\r\n          ng-bind=\"year.badgeTotal\">\r\n        </small>\r\n      </div>\r\n    </div>\r\n</div>\r\n";
+	module.exports = "<div class=\"cal-all-box\">\r\n  <div ng-repeat=\"rowOffset in [0, 4, 8] track by rowOffset\">\r\n    <div class=\"row cal-before-eventlist\">\r\n      <div\r\n        class=\"span3 col-md-3 col-xs-6 cal-cell year-cell {{ day.cssClass }}\"\r\n        ng-repeat=\"year in vm.view| calendarLimitTo:4:rowOffset track by $index\"\r\n        ng-init=\"yearIndex = vm.view.indexOf(month)\"\r\n        ng-click=\"vm.yearClicked(year, false, $event)\"\r\n        ng-class=\"{pointer: month.events.length > 0, 'cal-day-today': month.isToday}\">\r\n        <span\r\n          style=\"display: block; height:40px; text-align: center\"\r\n          class=\"pull-left\"\r\n          data-cal-date\r\n          ng-click=\"vm.calendarCtrl.dateClicked(year.date)\"\r\n          ng-bind=\"year.label\">\r\n        </span>\r\n        <small\r\n          class=\"cal-events-num badge badge-important pull-right\"\r\n          ng-show=\"year.badgeTotal > 0\"\r\n          ng-bind=\"year.badgeTotal\">\r\n        </small>\r\n      </div>\r\n    </div>\r\n    <mwl-calendar-slide-box\r\n      is-open=\"vm.openRowIndex === $index && vm.view[vm.openYearIndex].events.length > 0 && !vm.slideBoxDisabled\"\r\n      events=\"vm.view[vm.openYearIndex].events\"\r\n      on-event-click=\"vm.onEventClick\"\r\n      edit-event-html=\"vm.editEventHtml\"\r\n      on-edit-event-click=\"vm.onEditEventClick\"\r\n      delete-event-html=\"vm.deleteEventHtml\"\r\n      on-delete-event-click=\"vm.onDeleteEventClick\"\r\n      cell=\"vm.view[vm.openYearIndex]\">\r\n    </mwl-calendar-slide-box>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
 /* 16 */
@@ -430,14 +430,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  .controller('MwlCalendarAllCtrl', ["$scope", "moment", "calendarHelper", function($scope, moment, calendarHelper) {
 
 	    var vm = this;
-	    vm.openMonthIndex = null;
+	    vm.openYearIndex = null;
 
 	    $scope.$on('calendar.refreshView', function() {
 	      vm.view = calendarHelper.getAllView(vm.events, vm.startDate, vm.endDate, vm.cellModifier);
-
+	      var rows = Math.floor(vm.view.length / 5);
+	      vm.yearOffsets = [];
+	      for (var i = 0; i < rows; i++) {
+	        vm.yearOffsets.push(i * 5);
+	      }
 	      //Auto open the calendar to the current day if set
-	      if (vm.cellIsOpen && vm.openMonthIndex === null) {
-	        vm.openMonthIndex = null;
+	      if (vm.cellIsOpen && vm.openYearIndex === null) {
+	        vm.openYearIndex = null;
 	        vm.view.forEach(function(month) {
 	          if (moment(vm.viewDate).startOf('month').isSame(month.date)) {
 	            vm.monthClicked(month, true);
@@ -447,7 +451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    });
 
-	    vm.monthClicked = function(month, monthClickedFirstRun, $event) {
+	    vm.yearClicked = function(month, monthClickedFirstRun, $event) {
 
 	      if (!monthClickedFirstRun) {
 	        vm.onTimespanClick({
@@ -462,11 +466,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      vm.openRowIndex = null;
 	      var monthIndex = vm.view.indexOf(month);
-	      if (monthIndex === vm.openMonthIndex) { //the month has been clicked and is already open
-	        vm.openMonthIndex = null; //close the open month
+	      if (monthIndex === vm.openYearIndex) { //the month has been clicked and is already open
+	        vm.openYearIndex = null; //close the open month
 	        vm.cellIsOpen = false;
 	      } else {
-	        vm.openMonthIndex = monthIndex;
+	        vm.openYearIndex = monthIndex;
 	        vm.openRowIndex = Math.floor(monthIndex / 4);
 	        vm.cellIsOpen = true;
 	      }
