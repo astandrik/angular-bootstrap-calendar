@@ -24,11 +24,16 @@ angular
       return calendarHelper.formatDate(viewDate, calendarConfig.titleFormats.year);
     }
 
+    function all(viewDate) {
+      return "Весь период";
+    }
+
     return {
       day: day,
       week: week,
       month: month,
-      year: year
+      year: year,
+      all: all
     };
 
   });
